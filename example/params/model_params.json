@@ -1,0 +1,337 @@
+{
+    "train": {
+        "default": "/data/m1/huangl7/Lorelei2018/data/bio/ldc/am/bio/5-fold/aaai.ldc.set0.train.bio",
+        "type": "str", 
+        "help": "train set location"
+    }, 
+    "bi_train": {
+        "default": "/data/m1/huangl7/Lorelei2018/data/bio/ldc/ti/bio/5-fold/aaai.ldc.set0.train.bio",
+        "type": "str", 
+        "help": "bi train set location"
+    }, 
+    "dev": {
+        "default": "/data/m1/huangl7/Lorelei2018/data/bio/ldc/am/bio/5-fold/aaai.ldc.set0.test.bio",
+        "type": "str", 
+        "help": "dev set location"
+    }, 
+    "test": {
+        "default": "/data/m1/huangl7/Lorelei2018/data/bio/ldc/am/bio/5-fold/aaai.ldc.set0.test.bio",
+        "type": "str", 
+        "help": "test set location"
+    }, 
+    "model_dp": {
+        "default": "/data/m1/huangl7/Lorelei2018/name_tagging-master/example/naacl/adv-test/",
+        "type": "str", 
+        "help": "saved model location"
+    }, 
+    "tag_scheme": {
+        "default": "iobes",
+        "type": "str", 
+        "help": "tagging scheme: iob or iobes"
+    }, 
+    "lower": {
+        "default": "False",
+        "type": "bool",
+        "help": "lowercase words (this will not affect character inputs)"
+    }, 
+    "zeros": {
+        "default": "False",
+        "type": "bool",
+        "help": "replace digits with 0"
+    }, 
+    "char_dim": {
+        "default": "25", 
+        "type": "int", 
+        "help": "char embedding dimension"
+    }, 
+    "char_lstm_dim": {
+        "default": "25", 
+        "type": "int", 
+        "help": "char lstm hidden layer size"
+    }, 
+    "char_cnn": {
+        "default": "1", 
+        "type": "int", 
+        "help": "use cnn to generate character embeddings (0 disable)"
+    }, 
+    "char_conv": {
+        "default": "25", 
+        "type": "int", 
+        "help": "filter number"
+    }, 
+    "word_dim": {
+        "default": "100", 
+        "type": "int", 
+        "help": "token embedding dimension"
+    }, 
+    "word_lstm_dim": {
+        "default": "100", 
+        "type": "int", 
+        "help": "token lstm hidden layer size"
+    }, 
+    "pre_emb": {
+        "default": "/data/m1/huangl7/Lorelei2018/data/multilingual_embedding_muse/am-ti/vectors-am.txt",
+        "type": "str", 
+        "help": "location of pretrained embeddings"
+    }, 
+    "bi_pre_emb": {
+        "default": "/data/m1/huangl7/Lorelei2018/data/multilingual_embedding_muse/am-ti/vectors-ti.txt",
+        "type": "str", 
+        "help": "location of pretrained related language embeddings"
+    }, 
+    "all_emb": {
+        "default": "True",
+        "type": "bool",
+        "help": "load all embeddings"
+    }, 
+    "feat": {
+        "default": "0", 
+        "type": "int", 
+        "help": "use external features (0 to disable)"
+    }, 
+    "crf": {
+        "default": "1", 
+        "type": "int", 
+        "help": "use crf (0 to disable)"
+    }, 
+    "dropout": {
+        "default": "0.5", 
+        "type": "float", 
+        "help": "dropout on the input"
+    }, 
+    "tagger_learning_rate": {
+        "default": "0.01",
+        "type": "float", 
+        "help": "learning rate for bi-lstm-crf"
+    }, 
+    "tagger_optimizer": {
+        "default": "sgd", 
+        "type": "str", 
+        "help": "learning method (sgd, adadelta, adam)"
+    },
+     "dis_seq_learning_rate": {
+        "default": "0.005",
+        "type": "float",
+        "help": "learning rate for bi-lstm-crf"
+    },
+    "dis_seq_optimizer": {
+        "default": "sgd",
+        "type": "str",
+        "help": "learning method (sgd, adadelta, adam)"
+    },
+     "mapping_seq_learning_rate": {
+        "default": "0.005",
+        "type": "float",
+        "help": "learning rate for bi-lstm-crf"
+    },
+    "mapping_seq_optimizer": {
+        "default": "sgd",
+        "type": "str",
+        "help": "learning method (sgd, adadelta, adam)"
+    },
+    "num_epochs": {
+        "default": "100", 
+        "type": "int", 
+        "help": "number of epoches for name tagger training"
+    }, 
+    "batch_size": {
+        "default": "20", 
+        "type": "int", 
+        "help": "batch size for name tagger training"
+    }, 
+    "gpu": {
+        "default": "1",
+        "type": "int", 
+        "help": "use gpu. 0 to disable"
+    }, 
+    "cuda": {
+        "default": "1", 
+        "type": "int", 
+        "help": "cuda index"
+    }, 
+    "signal": {
+        "default": "test",
+        "type": "str", 
+        "help": "signal for saved model file"
+    }, 
+    "target_lang": {
+        "default": "am",
+        "type": "str", 
+        "help": "target language"
+    }, 
+    "related_lang": {
+        "default": "ti",
+        "type": "str", 
+        "help": "related language"
+    }, 
+    "max_vocab": {
+        "default": "200000",
+        "type": "int", 
+        "help": "maximum vocabulary size"
+    }, 
+    "map_id_init": {
+        "default": "True", 
+        "type": "bool", 
+        "help": "initialize the mapping as an indentity matrix"
+    }, 
+    "map_beta": {
+        "default": "0.001", 
+        "type": "float", 
+        "help": "beta for orthogonalization"
+    }, 
+    "dis_layers": {
+        "default": "2", 
+        "type": "int", 
+        "help": "discriminator layers"
+    }, 
+    "dis_hid_dim": {
+        "default": "2048", 
+        "type": "int", 
+        "help": "discriminator hidden layer dimension"
+    }, 
+    "dis_dropout": {
+        "default": "0.", 
+        "type": "float", 
+        "help": "dropout for discriminator layer"
+    }, 
+    "dis_input_dropout": {
+        "default": "0.1", 
+        "type": "float", 
+        "help": "dropout for input of discriminator layer"
+    }, 
+    "dis_steps": {
+        "default": "5", 
+        "type": "int", 
+        "help": "discriminator steps"
+    }, 
+    "dis_lambda": {
+        "default": "1", 
+        "type": "float", 
+        "help": "discriminator loss feedback coefficient"
+    }, 
+    "dis_most_frequent": {
+        "default": "70000",
+        "type": "int", 
+        "help": "select embeddings of the k most frequent words for discrimination"
+    }, 
+    "dis_smooth": {
+        "default": "0.1", 
+        "type": "float", 
+        "help": "discriminator smooth prediction"
+    }, 
+    "dis_clip_weights": {
+        "default": "0.", 
+        "type": "float", 
+        "help": "clip discriminator weights (0 to disable)"
+    }, 
+    "adversarial": {
+        "default": "True", 
+        "type": "bool", 
+        "help": "use adversarial training"
+    }, 
+    "adv_epochs": {
+        "default": "5", 
+        "type": "int", 
+        "help": "epoches adversarial training"
+    },
+    "adv_iteration": {
+        "default": "1000",
+        "type": "int",
+        "help": "iterations per epoch of adversarial training"
+    },
+    "adv_batch_size": {
+        "default": "32", 
+        "type": "int", 
+        "help": "batch size adversarial training"
+    }, 
+    "map_learning_rate": {
+        "default": "0.1", 
+        "type": "float", 
+        "help": "mapping learning rate"
+    }, 
+    "map_optimizer": {
+        "default": "sgd",
+        "type": "str", 
+        "help": "mapping optimizer"
+    }, 
+    "dis_learning_rate": {
+        "default": "0.1", 
+        "type": "float", 
+        "help": "discriminator learning rate"
+    }, 
+    "dis_optimizer": {
+        "default": "sgd", 
+        "type": "str", 
+        "help": "discriminator optimizer"
+    }, 
+    "lr_decay": {
+        "default": "0.98", 
+        "type": "float", 
+        "help": "learning rate decay (sgd only)"
+    }, 
+    "min_lr": {
+        "default": "1e-6", 
+        "type": "float", 
+        "help": "minimum learning rate (sgd only)"
+    }, 
+    "lr_shrink": {
+        "default": "0.5", 
+        "type": "float", 
+        "help": "shrink the learning rate if validation metric decrease"
+    }, 
+    "n_refinement": {
+        "default": "5", 
+        "type": "int", 
+        "help": "number of refinement iterations"
+    }, 
+    "dico_eval": {
+        "default": "/data/m1/huangl7/Lorelei2018/data/multilingual_embedding_muse/bilingual_dict/am-ti.dict",
+        "type": "str", 
+        "help": "path to evaluation dictionary"
+    }, 
+    "dico_method": {
+        "default": "csls_knn_10", 
+        "type": "str", 
+        "help": "method used for dictionary generation"
+    }, 
+    "dico_build": {
+        "default": "S2T", 
+        "type": "str", 
+        "help": "S2T,T2S,S2T|T2S,S2T&T2S"
+    }, 
+    "dico_threshold": {
+        "default": "0.", 
+        "type": "float", 
+        "help": "threshold for dictionary generation"
+    }, 
+    "dico_max_rank": {
+        "default": "15000", 
+        "type": "int", 
+        "help": "maximum dictionary words rank"
+    }, 
+    "dico_min_size": {
+        "default": "0", 
+        "type": "int", 
+        "help": "minimum generated dictionary size"
+    }, 
+    "dico_max_size": {
+        "default": "0", 
+        "type": "int", 
+        "help": "maximum generated dictionary size"
+    }, 
+    "target_emb": {
+        "default": "/data/m1/huangl7/Lorelei2018/data/multilingual_embedding_muse/am-ti/vectors-am.txt",
+        "type": "str", 
+        "help": "reload target language embeddings"
+    }, 
+    "related_emb": {
+        "default": "/data/m1/huangl7/Lorelei2018/data/multilingual_embedding_muse/am-ti/vectors-ti.txt",
+        "type": "str", 
+        "help": "reload related language embeddings"
+    }, 
+    "normalize_embeddings": {
+        "default": "",
+        "type": "str",
+        "help": "normalize embeddings before training"
+    }
+}
