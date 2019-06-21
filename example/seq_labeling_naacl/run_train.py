@@ -35,8 +35,7 @@ dis_most_frequent = args.dis_most_frequent
 
 # run command
 
-script = '/data/m1/huangl7/Lorelei2018/name_tagging-master/dnn_pytorch/' \
-         'seq_labeling_naacl/train.py'
+script = '../../dnn_pytorch/seq_labeling_naacl/train.py'
 cmd = [
     'python3',
     script,

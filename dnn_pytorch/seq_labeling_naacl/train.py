@@ -51,7 +51,7 @@ parser.add_argument("--mapping_seq_learning_rate", default="0.01", type=float, h
 parser.add_argument("--mapping_seq_optimizer", default="sgd", help="Learning method (SGD, Adadelta, Adam..)")
 parser.add_argument("--lr_method", default="sgd-lr_.005", help="Learning method (SGD, Adadelta, Adam..)")
 parser.add_argument("--optimizer", default="sgd", help="Learning method (SGD, Adadelta, Adam..)")
-parser.add_argument("--num_epochs", default="100", type=int, help="Number of training epochs")
+parser.add_argument("--num_epochs", default="2", type=int, help="Number of training epochs")
 parser.add_argument("--batch_size", default="20", type=int, help="Batch size.")
 parser.add_argument("--gpu", default="1", type=int, help="default is 0. set 1 to use gpu.")
 parser.add_argument("--cuda", default="1", type=int, help="gpu number.")
@@ -83,7 +83,7 @@ parser.add_argument("--dis_smooth", type=float, default=0.1, help="Discriminator
 parser.add_argument("--dis_clip_weights", type=float, default=0, help="Clip discriminator weights (0 to disable)")
 # training adversarial
 parser.add_argument("--adversarial", type=bool_flag, default=True, help="Use adversarial training")
-parser.add_argument("--adv_epochs", type=int, default=5, help="Number of epochs")
+parser.add_argument("--adv_epochs", type=int, default=1, help="Number of epochs")
 parser.add_argument("--adv_iteration", type=int, default=1000000, help="Iterations per epoch")
 parser.add_argument("--adv_batch_size", type=int, default=32, help="Batch size")
 parser.add_argument("--map_learning_rate", type=float, default=0.1, help="learning rate")
@@ -95,7 +95,7 @@ parser.add_argument("--min_lr", type=float, default=1e-6, help="Minimum learning
 parser.add_argument("--lr_shrink", type=float, default=0.5, help="Shrink the learning rate if the validation "
                                                                  "metric decreases (1 to disable)")
 # training refinement
-parser.add_argument("--n_refinement", type=int, default=5, help="Number of refinement iterations (0 to disable the "
+parser.add_argument("--n_refinement", type=int, default=1, help="Number of refinement iterations (0 to disable the "
                                                                 "refinement procedure)")
 # dictionary creation parameters (for refinement)
 parser.add_argument("--dico_eval", type=str, default="default", help="Path to evaluation dictionary")

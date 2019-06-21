@@ -33,9 +33,7 @@ def evaluate_ner(parameters, preds, dataset, id_to_tag, id_to_word,
 
     # Write predictions to disk and run CoNLL script externally
     eval_id = np.random.randint(1000000, 2000000)
-    # eval_temp = tempfile.mkdtemp()
-    # eval_temp = "/home/huangl7/name_tagging-master/tmp"
-    eval_temp = "/data/m1/huangl7/Lorelei2018/name_tagging-master/tmp"
+    eval_temp = "tmp"
     output_path = os.path.join(eval_temp, "eval.%i.output" % eval_id)
     scores_path = os.path.join(eval_temp, "eval.%i.scores" % eval_id)
     with open(output_path, 'w') as f:

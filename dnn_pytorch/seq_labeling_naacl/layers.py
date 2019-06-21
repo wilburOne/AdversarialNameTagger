@@ -11,8 +11,6 @@ from torch.nn.parameter import Parameter
 from dnn_pytorch import LongTensor, FloatTensor
 from dnn_pytorch.dnn_utils import init_param, log_sum_exp, sequence_mask
 from loader import load_embedding
-from layers_meta import meta_linear_ops
-
 
 def argmax(vec):
     # return the argmax as a python int
@@ -251,70 +249,6 @@ class EncodeLstm(nn.Module):
         return outputs
 
 
-# encode a sequence of words with bi-lstm
-class EncodeLstmMeta(nn.Module):
-    def __init__(self, input_dim, hidden_dim, bidrection=True, dropout=0):
-        super(EncodeLstmMeta, self).__init__()
-
-        self.input_dim = input_dim
-        self.hidden_dim = hidden_dim
-        self.bidrection = bidrection
-
-        if dropout:
-            self.word_dropout = nn.Dropout(p=dropout)
-
-        self.word_lstm = nn.LSTM(input_dim, hidden_dim, 1, bidirectional=bidrection, batch_first=True)
-
-        self.init_params()
-
-    def init_params(self):
-        for p in self.parameters():
-            if p.dim() == 1:
-                p.data.zero_()
-            else:
-                nn.init.xavier_uniform_(p.data)
-
-    def init_word_lstm_hidden(self, batch_size):
-        if self.bidrection:
-            return (autograd.Variable(torch.randn(2, batch_size, self.hidden_dim)
-                                      .type(FloatTensor)),
-                    autograd.Variable(torch.randn(2, batch_size, self.hidden_dim)
-                                      .type(FloatTensor)))
-        else:
-            return (autograd.Variable(torch.randn(1, batch_size, self.hidden_dim)
-                                      .type(FloatTensor)),
-                    autograd.Variable(torch.randn(1, batch_size, self.hidden_dim)
-                                      .type(FloatTensor)))
-
-    def forward(self, input, seq_len, batch_size, dropout=0, meta_step_size=0.001, meta_loss=None, stop_gradient=False):
-        if dropout:
-            input = self.word_dropout(input)
-
-        word_lstm_init_hidden = self.init_word_lstm_hidden(batch_size)
-        seq_len, idx = seq_len.sort(descending=True)
-        input = input[idx]
-
-        input = torch.nn.utils.rnn.pack_padded_sequence(input, seq_len.data.cpu().numpy(), batch_first=True)
-        # word_lstm_out, word_lstm_h = self.word_lstm(input, word_lstm_init_hidden)
-        word_lstm_out, word_lstm_h = meta_lstm_ops(inputs=input,
-                                                   weight=self.word_lstm.all_weights(),
-                                                   model=self.word_lstm,
-                                                   input_dim = self.input_dim,
-                                                   hidden_dim = self.hidden_dim,
-                                                   bidrection = self.bidrection,
-                                                   meta_loss=meta_loss,
-                                                   meta_step_size=meta_step_size,
-                                                   stop_gradient=stop_gradient)
-        word_lstm_out, _ = torch.nn.utils.rnn.pad_packed_sequence(word_lstm_out, batch_first=True)
-
-        _, unsorted_idx = idx.sort()
-        word_lstm_out = word_lstm_out[unsorted_idx]
-
-        outputs = word_lstm_out
-
-        return outputs
-
-
 class LinearProj(nn.Module):
     def __init__(self, input_dim, hidden_dim, label_size):
         super(LinearProj, self).__init__()
@@ -339,73 +273,6 @@ class LinearProj(nn.Module):
     def forward(self, input):
         tanh_out = nn.Tanh()(self.tanh_linear(input))
         linear_out = self.linear(tanh_out)
-        outputs = linear_out
-        return outputs
-
-    def forward_meta(self, input, meta_step_size=0.001, meta_loss=None, stop_gradient=False):
-        if meta_loss is not None:
-
-            if not stop_gradient:
-                grad_weight_tanh_linear = autograd.grad(meta_loss, self.tanh_linear.weight, create_graph=True)[0]
-                grad_weight_linear = autograd.grad(meta_loss, self.linear.weight, create_graph=True)[0]
-
-            else:
-                grad_weight_tanh_linear = Variable(autograd.grad(meta_loss, self.tanh_linear.weight,
-                                                                 create_graph=True)[0].data, requires_grad=False)
-                grad_weight_linear = Variable(autograd.grad(meta_loss, self.linear.weight,
-                                                            create_graph=True)[0].data, requires_grad=False)
-
-            # embed.weight.data.copy_(torch.from_numpy(pretrained_weight))
-            self.tanh_linear.weight = self.tanh_linear.weight - grad_weight_tanh_linear * meta_step_size
-            self.linear.weight = self.linear.weight - grad_weight_linear * meta_step_size
-
-        tanh_out = nn.Tanh()(self.tanh_linear(input))
-        linear_out = self.linear(tanh_out)
-        outputs = linear_out
-        return outputs
-
-
-class LinearProjMeta(nn.Module):
-    def __init__(self, input_dim, hidden_dim, label_size):
-        super(LinearProjMeta, self).__init__()
-
-        # model parameters
-        self.input_dim = input_dim
-        self.hidden_dim = hidden_dim
-        self.label_size = label_size
-
-        self.tanh_linear = nn.Linear(input_dim, hidden_dim)
-        self.linear = nn.Linear(hidden_dim, label_size)
-
-        self.init_params()
-
-    def init_params(self):
-        for p in self.parameters():
-            if p.dim() == 1:
-                p.data.zero_()
-            else:
-                nn.init.xavier_uniform_(p.data)
-
-    def forward(self, input):
-        tanh_out = nn.Tanh()(self.tanh_linear(input))
-        linear_out = self.linear(tanh_out)
-        outputs = linear_out
-        return outputs
-
-    def forward_meta(self, input, meta_step_size=0.001, meta_loss=None, stop_gradient=False):
-
-        tanh_out = nn.Tanh()(meta_linear_ops(inputs=input,
-                                             weight=self.tanh_linear.weight,
-                                             bias=self.tanh_linear.bias,
-                                             meta_loss=meta_loss,
-                                             meta_step_size=meta_step_size,
-                                             stop_gradient=stop_gradient))
-        linear_out = meta_linear_ops(inputs=tanh_out,
-                                     weight=self.linear.weight,
-                                     bias=self.linear.bias,
-                                     meta_loss=meta_loss,
-                                     meta_step_size=meta_step_size,
-                                     stop_gradient=stop_gradient)
         outputs = linear_out
         return outputs
 
@@ -2259,4 +2126,4 @@ class ProjLanguage(nn.Module):
 
                 return encoded, conv_chars, decoded, decoded_context, cross_decoded, cross_decoded_context
 
-            return encoded, conv_chars, decoded, decoded_contex
+            return encoded, conv_chars, decoded, decoded_context
