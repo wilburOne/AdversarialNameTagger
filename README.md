@@ -2,11 +2,6 @@
 
 This repository includes the source code for the cross-lingual name tagging with multi-level adversarial training
 
-
-## Model
- 
-   ![Alt Text](https://drive.google.com/drive/u/0/folders/19H9trOJjTBDDLyUux76WP77K8qaCHlrF)
-
 ## Requirements
 
 Python3, Pytorch
