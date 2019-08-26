@@ -5,7 +5,7 @@ This repository includes the source code for the cross-lingual name tagging with
 
 ## Model
  
-   ![Alt Text](https://blender04.cs.rpi.edu/~huangl7/papers/naacl_2019.png)
+   ![Alt Text](https://drive.google.com/drive/u/0/folders/19H9trOJjTBDDLyUux76WP77K8qaCHlrF)
 
 ## Requirements
 
